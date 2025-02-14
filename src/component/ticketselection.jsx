@@ -34,7 +34,10 @@ const [selectedTicket, setSelectedTicket] = useState("");
 
  return(
 	<div className="bg-teal-950 flex flex-col items-center p-6 min-h-screen text-white font-sans">
-		<h5 className='border-b-2 border-b-teal-500 text-2xl pb-2 mb-4 w-4/6'>Ticket selection</h5>
+		<div className="border-b-2 border-b-teal-500 md:flex justify-between items-center w-full pb-2 mb-3">
+			<h5 className=' text-2xl w-4/6'>Ticket selection</h5>
+			<p className="text-gray-300 text-lg">step 1 / 3</p>
+		</div>
 		<div className='bg-teal-900 flex flex-col items-center min-h-screen w-3/4 rounded p-2'>
 			<div className='w-[90%] rounded p-5 backdrop-blur-lg bg-[#02191D] text-center leading-[3] rounded-3xl border-[1px] border-teal-500 shadow-lg'>
 				<h1 className='font-bold text-3xl hover:text-teal-100'>Techember Fest 25</h1>
