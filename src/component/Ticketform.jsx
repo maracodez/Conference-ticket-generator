@@ -2,25 +2,25 @@
 import { useState, useEffect } from 'react';
 import upload from '../assets/upload.png'
 import '../styles/index.css'
+import { useNavigate } from 'react-router-dom';
+import axios from "axios"
 
 export default function Ticketform() {
 	const [formData, setFormData] = useState({
 		fullName: "",
 		email: "",
 		avatar: "",
+		image: "",
 		textArea: "",
 	});
 	const [errors, setErrors] = useState({});
-	const [ticket, setTicket] = useState(null);
+	//const [ticket, setTicket] = useState(null);
+	const navigate = useNavigate();
 	const [loading, setLoading] = useState(false)
 
-	// Handles file drag & drop
-	const handleDrop = (e) => {
-		e.preventDefault();
-		const file = e.dataTransfer.files[0];
-		if (file) {
-			handleFileUpload(file);
-		}
+	// Handles form input change
+	const handleChange = (e) => {
+		setFormData({ ...formData, [e.target.name]:e.target.value });
 	};
 
 	//load saved form data from localstorage
@@ -45,42 +45,18 @@ export default function Ticketform() {
 		localStorage.setItem("formData", JSON.stringify(formData))
 	}, [formData]);
 
-	//handle input change
-	const handleChange = (e) => {
-		setFormData({...formData, [e.target.name]:e.target.value });
-	};
-
-	//validate form inputs
-	const validateForm = () => {
-		let newErrors = {};
-
-		if (!formData.fullName.trim())newErrors.fullName = "Full name is required";
-		if (!formData.email.trim()) {
-			newErrors.email = "Email is required"
-		} else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-			newErrors.email = "Invalid email format"
-		}if (!formData.avatar.trim()) {
-			newErrors.avatar = "Avatar URL is required";
-		  } else if (!/^https?:\/\/.*\.(jpeg|jpg|png|gif|webp)$/.test(formData.avatar)) {
-			newErrors.avatar = "Invalid image URL format";
-		  }
-		setErrors(newErrors);
-		return Object.keys(newErrors).length === 0;
-	}
-
-	const handleFileUpload = async(file) => {
+	const handleFileUpload = async (e) => {
+		const file = e.target.files[0];
 
 		if (!file) {
-			console.error("No file selected!");
+			setErrors("No file selected!");
 			return;
 		}
-	
-		console.log("Uploading file:", file);
+
 		
 
-		if (!(file instanceof File)) {
-			console.error("Invalid file format:", file);
-			alert("Invalid file format!");
+		if (!file.type.startsWith("image/")) {
+			setErrors({ image: " Only image files are allowed"})
 			return;
 		}
 
@@ -94,33 +70,58 @@ export default function Ticketform() {
 
 		try {
 
-			const response = await fetch(import.meta.env.VITE_CLOUDINARY_API_FETCH, {
-				method:"POST",
-				body: data
-			});
+			const response = await axios.post(import.meta.env.VITE_CLOUDINARY_API_FETCH, 
+				formData
+			);
 
-			if (!response.ok) {
-				const errorText = await response.text(); // Get error details
-      			throw new Error(`Upload failed with status: ${response.status} - ${errorText}`);
-			  }
-
-			const uploadedImageUrl = await response.json();
-			console.log(uploadedImageUrl.url)
+			setFormData((prev) => ({ ...prev, avatar: response.data.secure_url }));
+			setErrors((prev) => ({ ...prev, image:""}));
 		} catch (error) {
 			console.error("File upload error:", error);
-			alert(`Upload failed! ${error.message}`);
+			setErrors(`Upload failed! ${error.message}`);
 		}
 		setLoading(false)
 		
 	}
 
+	//validate form inputs
+	const validateForm = () => {
+		let valid = true
+		let newErrors = {};
+
+		if (!formData.fullName.trim()){
+			newErrors.fullName = "Full name is required.";
+			valid = false;
+		}
+		if (!formData.email.trim()) {
+			newErrors.email = "Email is required"
+			valid = false;
+		} else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+			newErrors.email = "Invalid email format"
+			valid = false
+		}
+		if (!formData.textArea.trim()) {
+			newErrors.textArea = "Additional information is required.";
+			valid = false
+		}
+		if (!formData.avatar.trim()) {
+			newErrors.avatar = "Avatar URL is required";
+			valid = false
+		  } else if (!/^https?:\/\/.*\.(jpeg|jpg|png|gif|webp)$/.test(formData.avatar)) {
+			newErrors.avatar = "Invalid image URL format";
+		  }
+		setErrors(newErrors);
+		return valid;
+	}
+
+	
+
 	//handle submission
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		if (validateForm()) {
-			setTicket({ ...formData })
-			
-		}
+		if (!validateForm())  return;
+		
+		navigate("/ready", {state: formData})
 	}
 
 
@@ -141,7 +142,7 @@ export default function Ticketform() {
 						<div 
 							className='bg-teal-500 h-32 rounded-2xl' 
 							onDragOver={(e) => e.preventDefault()}
-							onDrop={handleDrop}
+							onDrop={handleChange}
 							onClick={() => document.getElementById("fileUpload").click()}
 						>
 							<div className='text-center p-5'>
@@ -240,14 +241,6 @@ export default function Ticketform() {
 			</form>
 		</div>
 
-		{ticket && (
-			<div>
-				<h3>Conference Ticket</h3>
-				<img src={ticket.avater}alt="Avater" />
-				<p>{ticket.fullName}</p>
-				<p>{ticket.email}</p>
-			</div>
-		)}
 	</div>
 	)
 }

@@ -33,28 +33,28 @@ const [selectedTicket, setSelectedTicket] = useState("");
 
 
  return(
-	<div className="bg-teal-950 flex flex-col items-center p-6 min-h-screen text-white font-sans">
+	<div className="bg-teal-950 flex flex-col items-center p-6 max-h-100 text-white font-sans">
 		<div className="border-b-2 border-b-teal-500 md:flex justify-between items-center w-full pb-2 mb-3">
 			<h5 className=' text-2xl w-4/6'>Ticket selection</h5>
 			<p className="text-gray-300 text-lg">step 1 / 3</p>
 		</div>
 		<div className='bg-teal-900 flex flex-col items-center min-h-screen w-3/4 rounded p-2'>
 			<div className='w-[90%] rounded p-5 backdrop-blur-lg bg-[#02191D] text-center leading-[3] rounded-3xl border-[1px] border-teal-500 shadow-lg'>
-				<h1 className='font-bold text-3xl hover:text-teal-100'>Techember Fest 25</h1>
+				<h1 className='font-bold text-3xl hover:text-teal-100'>Techember Fest &quot;25</h1>
 				<p className='text-center text-sm '>Join us for an unforgettable experience at <br />Techemeber! Secure you spot now!</p>
 				<div className='inline-block text-xs'>
 					<p className='inline-block'>Ebonyi State, Abakaliki <span>| | </span></p>
 					<span> march 15, 2025| 7:00pm</span>
 				</div>
 			</div>
-			<div className='text-left border-t-2 border-t-teal-400 mt-5 w-[90%] pt-5'>
+			<div className='text-left border-t-2 border-t-teal-400 mt-5 w-[90%] pt-5 '>
 				<p>Select Ticket Type:</p>
 				<div className='flex flex-wrap gap-2 mt-3'>
 					{/* free */}
 					{ticketTypes.map((ticket, index) => (
 						<div 
 							key={index}
-							className={`relative w-[45%] p-3 cursor-pointer rounded-xl transition ${selectedTicket === index ? "bg-teal-700 border-teal-900" : "bg-inherit" }`}
+							className={`relative w-[45%] p-3 cursor-pointer rounded-xl hover:bg-teal-950  transition  ${selectedTicket === index ? "bg-teal-700 border-teal-900" : "bg-inherit" }`}
 							onClick={() => setSelectedTicket(index)}
 						>
 							
