@@ -33,9 +33,9 @@ const [selectedTicket, setSelectedTicket] = useState("");
 
 
  return(
-	<div className="bg-teal-950 flex flex-col items-center p-6 max-h-100 text-white font-sans">
+	<div className="flex flex-col items-center p-6 text-white w-full">
 		<div className="border-b-2 border-b-teal-500 md:flex justify-between items-center w-full pb-2 mb-3">
-			<h5 className=' text-2xl w-4/6'>Ticket selection</h5>
+			<h5 className=' text-2xl'>Ticket selection</h5>
 			<p className="text-gray-300 text-lg">step 1 / 3</p>
 		</div>
 		<div className='bg-teal-900 flex flex-col items-center min-h-screen w-3/4 rounded p-2'>

@@ -119,7 +119,7 @@ export default function Ticketform() {
   };
 
   return (
-    <div className="bg-[#02191D] flex flex-col items-center p-6 min-h-screen text-white font-sans">
+    <div className="flex flex-col items-center p-6 min-h-screen text-white font-sans">
       <div className="border-b-2 border-b-teal-500 md:flex justify-between items-center w-full pb-3">
         <h5 className="text-2xl sm:text-xl w-4/6 lg:w-4/6 sm:w-1/2">Attendee Details</h5>
         <p className="text-gray-300 text-lg">Step 2 / 3</p>
@@ -135,7 +135,7 @@ export default function Ticketform() {
               >
                 <div className="text-center p-5">
                   {loading ? (
-                    "Uploading..."
+                    "Uploading..."  
                   ) : (
                     <img src={upload} alt="Upload" className="w-[20%] mx-auto" />
                   )}
@@ -160,7 +160,7 @@ export default function Ticketform() {
             name="fullName"
             value={formData.fullName}
             onChange={handleChange}
-            className="bg-inherit border border-teal-500 outline-none rounded p-2"
+            className="bg-inherit border border-teal-500 outline-none outline-focus rounded p-2"
           />
           {errors.fullName && <p className="text-red-500 text-sm">{errors.fullName}</p>}
 
@@ -172,7 +172,7 @@ export default function Ticketform() {
             name="email"
             value={formData.email}
             onChange={handleChange}
-            className="bg-inherit border border-teal-500 outline-none rounded p-2 mt-1"
+            className="bg-inherit border border-teal-500 outline-none outline-focus rounded p-2 mt-1"
           />
           {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
 
