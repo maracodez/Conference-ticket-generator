@@ -3,6 +3,9 @@ import upload from "../assets/upload.png";
 import "../styles/index.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import frame from '../assets/frame.png';
+import frame2 from '../assets/frame2.png';
+import btns from '../assets/btns.png'
 
 export default function Ticketform() {
   const [formData, setFormData] = useState({
@@ -120,6 +123,17 @@ export default function Ticketform() {
 
   return (
     <div className="flex flex-col items-center p-6 min-h-screen text-white font-sans">
+		<div className='flex flex-row gap-5'>
+			<div>
+				<img src={frame} alt="" />
+			</div>
+			<div>
+				<img src={frame2} alt="" />
+			</div>
+			<div>
+				<img src={btns} alt="" />
+			</div>
+		</div>
       <div className="border-b-2 border-b-teal-500 md:flex justify-between items-center w-full pb-3">
         <h5 className="text-2xl sm:text-xl w-4/6 lg:w-4/6 sm:w-1/2">Attendee Details</h5>
         <p className="text-gray-300 text-lg">Step 2 / 3</p>
@@ -139,7 +153,7 @@ export default function Ticketform() {
                   ) : (
                     <img src={upload} alt="Upload" className="w-[20%] mx-auto" />
                   )}
-                  <p className="pt-3">Drag & Drop to Upload</p>
+                  <p className="pt-3">Drag & Drop or click to Upload</p>
                 </div>
                 <input 
 					type="file" 
