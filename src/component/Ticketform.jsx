@@ -66,12 +66,18 @@ export default function Ticketform() {
 		data.append("file", file)
 		data.append("upload_preset", import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET)
 		data.append("cloud_name", import.meta.env.VITE_CLOUDINARY_NAME)
+		
 
 
 		try {
 
 			const response = await axios.post(import.meta.env.VITE_CLOUDINARY_API_FETCH, 
-				formData
+				formData,
+				{
+					headers: {
+						'Content-Type': 'multipart/form-data'
+					},
+				}
 			);
 
 			setFormData((prev) => ({ ...prev, avatar: response.data.secure_url }));
@@ -128,7 +134,7 @@ export default function Ticketform() {
 	return (
 	<div className='bg-[#02191D]  flex flex-col items-center p-6 min-h-screen text-white font-sans'>
 		<div className="border-b-2 border-b-teal-500 md:flex justify-between items-center w-full pb-3">
-			<h5 className=' text-2xl w-4/6'>Attendee Details</h5>
+			<h5 className=' text-2xl sm:text-xl w-4/6 lg:w-4/6 sm:w-1/2'>Attendee Details</h5>
 			<p className="text-gray-300 text-lg">step 2 / 3</p>
 		</div>
 		<div className='bg-teal-900 min-h-screen w-3/4 rounded p-2 mt-5'>
@@ -141,8 +147,7 @@ export default function Ticketform() {
 					<div className='bg-[#02191D] w-5/5 flex flex-col items-center rounded-xl p-5'>
 						<div 
 							className='bg-teal-500 h-32 rounded-2xl' 
-							onDragOver={(e) => e.preventDefault()}
-							onDrop={handleChange}
+							onChange={handleChange}
 							onClick={() => document.getElementById("fileUpload").click()}
 						>
 							<div className='text-center p-5'>
@@ -176,11 +181,10 @@ export default function Ticketform() {
 					value={formData.fullName}
 					onChange={handleChange}
 					className='bg-inherit border border-teal-500 outline-none rounded p-2'
-					aria-describedby='fullNameError'
 				/>
-				{errors.fullName && (
+				{errors.fullName && 
 					<p id='fullNameError' className='text-red-500 text-sm'>{errors.fullName}</p>
-				)}
+				}
 
 				{/* email */}
 				<label className='mt-3'>Email:</label>
@@ -191,11 +195,10 @@ export default function Ticketform() {
 					value={formData.email}
 					onChange={handleChange}
 					className='bg-inherit border border-teal-500 outline-none rounded p-2 mt-1'
-					aria-describedby='emailError'
 				/>
-				{errors.email && (
+				{errors.email && 
 					<p id='emailError' className='text-red-500 text-sm'>{errors.email}</p>
-				)}
+				}
 
 				{/* Text area */}
 				<div>
@@ -206,31 +209,15 @@ export default function Ticketform() {
 						placeholder="Textarea"
 						className="bg-inherit border w-full h-40 outline-none p-3 text-white font-semibold rounded-md"
 						value={formData.textArea}
-						onChange={(e) => setFormData({ ...formData, textArea: e.target.value })}
-						required
+						onChange={handleChange}
 					></textarea>
+					{errors.textArea && <p className='text-red-500'>{errors.textArea}</p>}
 				</div>
-
-				{/* avater 
-				<label className='mt-3'>Avatar URl</label>
-				<input 
-					type="text" 
-					name='avater' 
-					value={formData.avater}
-					onChange={handleChange}
-					placeholder='https://example.com/image.jpg'
-					className='bg-inherit border border-teal-500 outline-none rounded p-2'
-					aria-describedby='avaterError'
-				/>
-				{errors.avater && (
-					<p id='avaterError' className='text-red-500 text-sm'>{errors.avater}</p>
-				)}
-					*/}
 				
 				<div className='flex flex-row mt-7 gap-5'>
 					<button 
 						type='button'
-						// onClick={() => navigate("/")}
+						onClick={() => navigate(-1)}
 						className='w-[50%] border border-teal-700 pt-2 pb-2 pr-5 pl-5 rounded hover:bg-[#02191D] cursor-pointer font-bold'
 					>Back</button>
 					<button 
